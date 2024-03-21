@@ -1,0 +1,38 @@
+﻿@model IEnumerable<CummulativeProject.Models.Teacher>
+
+@{
+    ViewBag.Title = "List of Teachers";
+}
+
+<h2>Teachers</h2>
+
+<form class="search-form" action="/Teacher/List" method="GET">
+    <input type="text" name="Name" placeholder="Enter Teacher Name" />
+    <input type="date" name="HireDate" placeholder="Select Hire Date" />
+    <input type="number" name="Salary" placeholder="Enter Salary" />
+    <button class="btn-primary">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Teacher Name</th>
+            <th>Employee Number</th>
+            <th>Hire Date</th>
+            <th>Salary</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (CummulativeProject.Models.Teacher Teacher in Model)
+        {
+            <tr>
+                <td>@Teacher.TeacherFname @Teacher.TeacherLname</td>
+                <td>@Teacher.EmployeeNumber</td>
+                <td>@Teacher.HireDate.ToShortDateString()</td>
+                <td>@Teacher.Salary</td>
+                <td><a href="/Teacher/Show/@Teacher.TeacherId">View</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

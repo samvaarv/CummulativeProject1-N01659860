@@ -1,0 +1,24 @@
+﻿@model CummulativeProject.Models.TeacherViewModel
+
+@{
+    ViewBag.Title = "Show";
+}
+
+<div class="card-info">
+    <div>
+        <h2>@Model.Teacher.TeacherFname @Model.Teacher.TeacherLname</h2>
+        <p>Employee Number: @Model.Teacher.EmployeeNumber</p>
+        <p>Hire Date: @Model.Teacher.HireDate.ToShortDateString()</p>
+    </div>
+    <div class="card-salary">Salary: <span>@Model.Teacher.Salary</span></div>
+
+    <div class="card-inside">
+        <h3>Classes Taught</h3>
+        <ul>
+            @foreach (var Classes in Model.ClassesTaught)
+            {
+                <li>@Classes.ClassName - @Classes.ClassCode</li>
+            }
+        </ul>
+    </div>
+</div>

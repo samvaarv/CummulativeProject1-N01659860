@@ -1,0 +1,16 @@
+﻿@model CummulativeProject.Models.CourseViewModel
+@{
+    ViewBag.Title = "Show";
+}
+
+<div>
+    <h2>@Model.Course.CourseName</h2>
+    <p>Course Code: @Model.Course.CourseCode</p>
+
+    <!-- Display the teacher who teaches the course -->
+    <h3>Teacher</h3>
+    <p>Name: @Model.Teacher.TeacherFname @Model.Teacher.TeacherLname</p>
+    <p>Employee Number: @Model.Teacher.EmployeeNumber</p>
+    <p>Hire Date: @Model.Teacher.HireDate.</p>
+    <p>Salary: @Model.Teacher.Salary</p>
+</div>

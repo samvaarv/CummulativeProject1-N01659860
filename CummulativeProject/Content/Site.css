@@ -1,0 +1,152 @@
+﻿/* Google font-face import*/
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+*, html, body {
+    font-family: "Montserrat", sans-serif;
+    box-sizing: border-box;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    margin-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by defalult */
+input,
+select,
+textarea {
+    min-width: 280px;
+    border-radius: 5px;
+    padding: 8px 16px;
+    border: 2px solid #eff0f5;
+}
+
+h2 {
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.search-form > * {
+    margin-bottom: 20px;
+    margin-left: 16px;
+}
+
+.btn-primary {
+    border: none;
+    padding: 8px 16px;
+    background-color: #151515;
+    color: #fff;
+    border-radius: 5px;
+    transition: all .3s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #351F39;
+    }
+.table, tr {
+    border: none;
+    border-color: transparent;
+}
+    .table > :not(caption) > * > * {
+        padding: 1rem;
+        font-size: 14px;
+    }
+
+    .table thead {
+        background-color: #eff0f5;
+        color: #7683a6;
+        text-transform: uppercase
+    }
+
+    .table tbody {
+        color: #a1aac2;
+    }
+
+    .table tbody tr td:first-child {
+        position: relative;
+        font-weight: bold;
+    }
+        .table tbody tr:hover {
+            background-color: #f4f6ff;
+            transition: all .3s ease;
+        }
+
+        .table tbody tr td a {
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #151515;
+            padding: 8px 20px;
+            border-radius: 50vw;
+            font-weight: 600;
+            font-size: 12px;
+            border: 1px solid #151515;
+            transition: all .3s ease;
+        }
+
+            .table tbody tr td a:hover {
+                box-shadow: 0px 0px 10px #b5b3b3;
+                background: #ffffff;
+                color: #151515;
+            }
+
+        .table tbody tr td:first-child::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 4px;
+            background-color: transparent;
+            transition: all .3s ease;
+        }
+
+        .table tbody tr:hover td:first-child::before {
+            background-color: #151515;
+        }
+
+.card-info {
+    background-image: linear-gradient(45deg, #000000, #434343);
+    border-radius: 20px;
+    padding: 20px 20px;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+    .card-info h2 {
+        color: #fff;
+        margin-bottom: 10px;
+    }
+
+    .card-info p {
+        font-size: 14px;
+        font-weight: 600;
+        color: #fff;
+        margin-bottom: 5px;
+    }
+
+    .card-info .card-salary {
+        color: #fff;
+        font-size: 14px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #fff;
+    }
+
+.card-salary span {
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.card-inside {
+    margin-top: 16px;
+    padding: 20px;
+    border-radius: 14px;
+    background-color: #fff;
+    flex-basis: 100%;
+}

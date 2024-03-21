@@ -1,0 +1,34 @@
+﻿@model IEnumerable<CummulativeProject.Models.Class>
+
+@{
+    ViewBag.Title = "List of Classs";
+}
+
+<h2>List of Classes</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Class ID</th>
+            <th>Class Name</th>
+            <th>Class Code</th>
+            <th>Teacher ID</th>
+            <th>Start Date</th>
+            <th>Finish Date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (CummulativeProject.Models.Class Class in Model)
+        {
+            <tr>
+                <td>@Class.ClassId</td>
+                <td>@Class.ClassName</td>
+                <td>@Class.ClassCode</td>
+                <td>@Class.TeacherId</td>
+                <td>@Class.StartDate.ToShortDateString()</td>
+                <td>@Class.FinishDate.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

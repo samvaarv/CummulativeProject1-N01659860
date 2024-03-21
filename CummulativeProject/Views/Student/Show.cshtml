@@ -1,0 +1,13 @@
+﻿@model CummulativeProject.Models.Student
+
+@{
+    ViewBag.Title = "Show Student Information";
+}
+
+<div class="card-info">
+    <div>
+        <h2>@Model.StudentFname @Model.StudentLname</h2>
+        <p>Student Number: @Model.StudentNumber</p>
+        <p>Enroll Date: @Model.EnrolDate.ToShortDateString()</p>
+    </div>
+</div>

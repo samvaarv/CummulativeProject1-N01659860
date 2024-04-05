@@ -81,6 +81,19 @@ namespace CummulativeProject.Controllers
         [HttpPost]
         public ActionResult Create(string TeacherFname, string TeacherLname, string EmployeeNumber, DateTime HireDate, decimal Salary) {
 
+            // Create an instance of TeacherDataController to interact with the data
+            TeacherDataController DataController = new TeacherDataController();
+
+            // Check if the employee number already exists
+            bool isUnique = DataController.IsEmployeeNumberUnique(EmployeeNumber);
+
+            if (!isUnique)
+            {
+                // If the employee number already exists, return an error response
+                ModelState.AddModelError("EmployeeNumber", "Employee number already exists.");
+                return RedirectToAction("New");
+            }
+
             // Create a new teacher object with the provided information
             Teacher NewTeacher = new Teacher();
             NewTeacher.TeacherFname = TeacherFname;
@@ -89,8 +102,6 @@ namespace CummulativeProject.Controllers
             NewTeacher.HireDate = HireDate;
             NewTeacher.Salary = Salary;
 
-            // Create an instance of TeacherDataController to interact with the data
-            TeacherDataController DataController = new TeacherDataController();
 
             // Add the new teacher to the database
             DataController.AddTeacher(NewTeacher);

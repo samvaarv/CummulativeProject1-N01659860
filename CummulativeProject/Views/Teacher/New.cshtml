@@ -5,6 +5,20 @@
 
 <h2>New Teacher</h2>
 
+<!-- Display validation errors -->
+@if (ViewData.ModelState.Count > 0)
+{
+    <div class="alert alert-danger" role="alert">
+        Please correct the following errors:
+        <ul>
+            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+            {
+                <li>@error.ErrorMessage</li>
+            }
+        </ul>
+    </div>
+}
+
 <form method="post" action="/Teacher/Create" class="add-form" id="addForm" onsubmit="addTeacher()">
     <div>
         <label for="TeacherFname">Teacher First Name <span>*</span></label>

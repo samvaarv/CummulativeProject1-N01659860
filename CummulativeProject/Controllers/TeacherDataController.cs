@@ -313,5 +313,30 @@ namespace CummulativeProject.Controllers
             Conn.Close();
         }
 
+        public bool IsEmployeeNumberUnique(string employeeNumber)
+        {
+            // Create connection to database    
+            MySqlConnection Conn = SchoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            // Create a command for SQL query
+            MySqlCommand Cmd = Conn.CreateCommand();
+
+            // Query to check if the employee number already exists
+            string query = "SELECT COUNT(*) FROM teachers WHERE employeenumber = @EmployeeNumber";
+            Cmd.CommandText = query;
+            Cmd.Parameters.AddWithValue("@EmployeeNumber", employeeNumber);
+
+            // Execute the command and retrieve the result
+            int count = Convert.ToInt32(Cmd.ExecuteScalar());
+
+            // Close the database connection
+            Conn.Close();
+
+            // If count > 0, employee number already exists; otherwise, it's unique
+            return count == 0;
+        }
+
+
     }
 }

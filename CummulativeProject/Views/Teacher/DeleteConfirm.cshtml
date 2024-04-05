@@ -1,0 +1,58 @@
+﻿@model CummulativeProject.Models.TeacherViewModel
+@{
+    ViewBag.Title = "DeleteConfirm";
+}
+
+<h2>Are you sure to delete the following Teacher information?</h2>
+
+<div class="card-info">
+    <div>
+        <h2>@Model.Teacher.TeacherFname @Model.Teacher.TeacherLname</h2>
+        <p>Employee Number: @Model.Teacher.EmployeeNumber</p>
+        <p>Hire Date: @Model.Teacher.HireDate.ToShortDateString()</p>
+    </div>
+    <div class="card-salary">Salary: <span>@Model.Teacher.Salary</span></div>
+
+    <div class="card-inside">
+        <h3>Classes Taught</h3>
+        <ul>
+            @foreach (var Classes in Model.ClassesTaught)
+            {
+                <li>@Classes.ClassName - @Classes.ClassCode</li>
+            }
+        </ul>
+    </div>
+</div>
+
+<form action="/Teacher/Delete/@Model.Teacher.TeacherId" method="post" class="mt-2" onsubmit="removeTeacher(teacherId)">
+    <input type="submit" value="Delete Teacher" class="btn btn-success"/>
+</form>
+
+<script>
+    window.onload = function () {
+        function removeTeacher(teacherId) {
+            // Create an XHR object
+            var xhr = new XMLHttpRequest();
+
+            // Define the request parameters
+            xhr.open("POST", "/Teacher/Delete/" + teacherId, true);
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+            // Set up the onload function to handle the response
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // Request was successful
+                    var responseData = JSON.parse(xhr.responseText);
+                    // Handle the response, e.g., show a success message or update the UI
+                    alert("Teacher removed successfully!");
+                } else {
+                    // Request failed
+                    alert("Error removing teacher. Please try again.");
+                }
+            };
+
+            // Send the request
+            xhr.send();
+        }
+    };
+</script>

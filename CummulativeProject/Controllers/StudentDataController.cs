@@ -84,7 +84,7 @@ namespace CummulativeProject.Controllers
         /// Details of the selected student
         /// </returns>
         /// <example>
-        /// GET ../api/studentdata/findstudent/2 -> {"StudentId":"2", "StudentFname":"Caitlyn","StudentLname":"Cummings","EmployeeNumber":"T381","HireDate":"2014-06-10 12:00:00 AM","Salary":"62.77"}
+        /// GET ../api/studentdata/findstudent/2 -> {"StudentId":"2", "StudentFname":"Jennifer","StudentLname":"Faulkner","StudentNumber":"N1679","EnrollDate":"2018-08-02 12:00:00 AM"}
         /// </example>
 
         [HttpGet]

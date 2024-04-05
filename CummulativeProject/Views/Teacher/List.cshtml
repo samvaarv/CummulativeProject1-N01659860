@@ -7,12 +7,31 @@
 <h2>Teachers</h2>
 
 <form class="search-form" action="/Teacher/List" method="GET">
-    <input type="text" name="Name" placeholder="Enter Teacher Name" />
-    <input type="date" name="HireDate" placeholder="Select Hire Date" />
-    <input type="number" name="Salary" placeholder="Enter Salary" />
+    <div>
+        <label for="Name">Teacher Name</label>
+        <input type="text" name="Name" id="Name" placeholder="Enter Teacher Name" />
+    </div>
+    <div>
+        <label for="MinHireDate">Hire Date From</label>
+        <input type="date" name="MinHireDate" id="MinHireDate" placeholder="Select From Hire Date" />
+    </div>
+    <div>
+        <label for="MaxHireDate">Hire Date To</label>
+        <input type="date" name="MaxHireDate" id="MaxHireDate" placeholder="Select To Hire Date" />
+    </div>
+    <div>
+        <label for="MinSalary">Minimum Salary</label>
+        <input type="number" name="MinSalary" id="MinSalary" placeholder="Enter Min. Salary" />
+    </div>
+    <div>
+        <label for="MaxSalary">Maximum Salary</label>
+        <input type="number" name="MaxSalary" id="MaxSalary" placeholder="Enter Max. Salary" />
+    </div>
     <button class="btn-primary">Search</button>
 </form>
-
+<div>
+    <a href="/Teacher/New" class="btn btn-info mt-2 mb-2">Add Teacher</a>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -28,7 +47,7 @@
         {
             <tr>
                 <td>@Teacher.TeacherFname @Teacher.TeacherLname</td>
-                <td>@Teacher.EmployeeNumber</td>
+                <td class="text-uppercase">@Teacher.EmployeeNumber</td>
                 <td>@Teacher.HireDate.ToShortDateString()</td>
                 <td>@Teacher.Salary</td>
                 <td><a href="/Teacher/Show/@Teacher.TeacherId">View</a></td>

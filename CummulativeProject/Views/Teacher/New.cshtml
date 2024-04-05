@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "New";
+}
+
+<h2>New Teacher</h2>
+
+<form method="post" action="/Teacher/Create" class="add-form" id="addForm" onsubmit="addTeacher()">
+    <div>
+        <label for="TeacherFname">Teacher First Name <span>*</span></label>
+        <input type="text" name="TeacherFname" id="TeacherFname" required />
+    </div>
+    <div>
+        <label for="TeacherLname">Teacher Last Name <span>*</span></label>
+        <input type="text" name="TeacherLname" id="TeacherLname" required />
+    </div>
+    <div>
+        <label for="EmployeeNumber">Employee Number <span>*</span></label>
+        <input type="text" name="EmployeeNumber" id="EmployeeNumber" required />
+        <p id="ErrorMessage" style="color: red; display: none;">Invalid input. Please enter 't' or 'T' followed by a three-digit number.</p>
+    </div>
+    <div>
+        <label for="HireDate">Hire Date <span>*</span></label>
+        <input type="date" name="HireDate" id="HireDate" required />
+    </div>
+    <div>
+        <label for="Salary">Salary <span>*</span></label>
+        <input type="number" name="Salary" id="Salary" min="0" required />
+    </div>
+    <div>
+        <input type="submit" value="Add Teacher" class="btn-primary" />
+    </div>
+</form>
+
+<script>
+    window.onload = function () {
+        document.getElementById("addForm").addEventListener("submit", function (event) {
+            // Prevent the form from submitting
+            event.preventDefault();
+
+            // Get the value from the input field
+            var inputValue = document.getElementById("EmployeeNumber").value;
+
+            // Regular expression pattern: starts with 't' or 'T' followed by three digits
+            var regex = /^(t|T)\d{3}$/;
+
+            // Test the input against the regular expression
+            if (regex.test(inputValue)) {
+                document.getElementById("ErrorMessage").style.display = "none";
+                // Continue the form submit
+                event.currentTarget.submit();
+            } else {
+                document.getElementById("ErrorMessage").style.display = "block";
+            }
+        });
+
+        // Get today's date
+        var today = new Date().toISOString().split('T')[0];
+
+        // Set the maximum date for the input field
+        document.getElementById("HireDate").setAttribute("max", today);
+
+        function addTeacher() {
+            // Prevent the default form submission
+            event.preventDefault();
+
+            // Get the form data
+            var formData = new FormData(document.getElementById("addForm"));
+
+            // Create an XHR object
+            var xhr = new XMLHttpRequest();
+
+            // Define the request parameters
+            xhr.open("POST", "/Teacher/Create", true);
+            xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+
+            // Set up the onload function to handle the response
+            xhr.onload = function () {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    // Request was successful
+                    var responseData = JSON.parse(xhr.responseText);
+                    // Handle the response, e.g., show a success message or update the UI
+                    alert("Teacher added successfully!");
+                } else {
+                    // Request failed
+                    alert("Error adding teacher. Please try again.");
+                }
+            };
+
+            // Send the request with the form data
+            xhr.send(formData);
+        }
+    };
+</script>

@@ -23,8 +23,10 @@ namespace CummulativeProject.Controllers
         /// Retrieves a list of teachers from the database which match the search key
         /// </summary>
         /// <param name="NameKey">The name of the teacher to search for (optional).</param>
-        /// <param name="HireDateKey">The hire date of the teacher to search for (optional).</param>
-        /// <param name="SalaryKey">The salary of the teacher to search for (optional).</param>
+        /// <param name="MinHireDateKey">The minimum hire date of the teacher to search for (optional).</param>
+        /// <param name="MaxHireDateKey">The maximum hire date of the teacher to search for (optional).</param>
+        /// <param name="MinSalaryKey">The minimum salary of the teacher to search for (optional).</param>
+        /// <param name="MaxSalaryKey">The maximum salary of the teacher to search for (optional).</param>
         /// <returns>
         /// A list of teachers matching the specified criteria.
         /// </returns>
@@ -35,7 +37,7 @@ namespace CummulativeProject.Controllers
         /// </example>
         [HttpGet]
         [Route("api/teacherdata/Listteachers/{NameKey}")]
-        public List<Teacher> ListTeachers(string NameKey = null, DateTime? HireDateKey = null, decimal? SalaryKey = null)
+        public List<Teacher> ListTeachers(string NameKey = null, DateTime? MinHireDateKey = null, DateTime? MaxHireDateKey = null, decimal? MinSalaryKey = null, decimal? MaxSalaryKey = null)
         {
             // Create connection to database    
             MySqlConnection Conn = SchoolDbContext.AccessDatabase();
@@ -50,14 +52,14 @@ namespace CummulativeProject.Controllers
             {
                 query += $" AND (LOWER(teacherfname) LIKE LOWER('%{NameKey}%') OR LOWER(teacherlname) LIKE LOWER('%{NameKey}%'))";
             }
-            if (HireDateKey != null)
+            if (MinHireDateKey != null || MaxHireDateKey != null)
             {
-                query += $" AND hiredate >= '{HireDateKey.Value.ToString("yyyy-MM-dd")}'";
+                query += $" AND hiredate >= '{MinHireDateKey.Value.ToString("yyyy-MM-dd")}' AND hiredate <= '{MaxHireDateKey.Value.ToString("yyyy-MM-dd")}'";
             }
 
-            if (SalaryKey != null)
+            if (MinSalaryKey != null || MaxSalaryKey != null)
             {
-                query += $" AND salary >= {SalaryKey}";
+                query += $" AND salary >= {MinSalaryKey} AND salary <= {MaxSalaryKey}";
             }
             //Set the command text to the SQL query
             Cmd.CommandText = query;
@@ -107,7 +109,14 @@ namespace CummulativeProject.Controllers
         /// Details of the selected teacher
         /// </returns>
         /// <example>
-        /// GET ../api/teacherdata/findteacher/2 -> {"TeacherId":"2", "TeacherFname":"Caitlyn","TeacherLname":"Cummings","EmployeeNumber":"T381","HireDate":"2014-06-10 12:00:00 AM","Salary":"62.77"}
+        /// GET ../api/teacherdata/findteacher/2 -> {"TeacherId":"2", "TeacherFname":"Caitlyn","TeacherLname":"Cummings","EmployeeNumber":"T381","HireDate":"2014-06-10 12:00:00 AM","Salary":"62.77",
+        ///     "ClassesTaught":
+        ///     [
+        ///     {"ClassCode":"HTTP5102","ClassId":"2","ClassName":"Project Management","FinishDate":"2018-12-14T00:00:00","StartDate":"2018-09-04T00:00:00"},
+        ///     
+        ///     {,"ClassCode":"HTTP5201","ClassId":"6","ClassName":"Security & Quality Assurance","FinishDate":"2019-04-27T00:00:00","StartDate":"2019-01-08T00:00:00"}
+        ///     ]
+        /// }
         /// </example>
 
         [HttpGet]
@@ -190,6 +199,118 @@ namespace CummulativeProject.Controllers
             };
 
             return TeacherViewModel;
+        }
+
+        //Add Teacher Data
+        /// <summary>
+        /// Adds a new teacher to the database.
+        /// </summary>
+        /// <param name="NewTeacher">The Teacher object containing the details of the new teacher to be added.</param>
+        /// <example>
+        /// POST ../api/teacherdata/addteacher
+        /// curl -H "Content-Type: application/json" -d @teacher.json ../api/teacherdata/addteacher
+        /// {
+        ///     "TeacherFname": "John",
+        ///     "TeacherLname": "Doe",
+        ///     "EmployeeNumber": "T123",
+        ///     "HireDate": "2024-03-16",
+        ///     "Salary": 55
+        /// }
+        /// </example>
+        [HttpPost]
+        public void AddTeacher([FromBody]Teacher NewTeacher)
+        {
+            // Establish a connection to the database
+            MySqlConnection Conn = SchoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            // Create a command to execute SQL queries
+            MySqlCommand Cmd = Conn.CreateCommand();
+
+            // Define the SQL query to insert a new teacher
+            string query = "INSERT INTO teachers (teacherfname, teacherlname, employeenumber, hiredate, salary) VALUES (@teacherfname, @teacherlname, UPPER(@employeenumber), @hiredate, @salary)";
+            Cmd.CommandText = query;
+
+            // Set the parameters for the SQL query
+            Cmd.Parameters.AddWithValue("@teacherfname", NewTeacher.TeacherFname);
+            Cmd.Parameters.AddWithValue("@teacherlname", NewTeacher.TeacherLname);
+            Cmd.Parameters.AddWithValue("@employeenumber", NewTeacher.EmployeeNumber);
+            Cmd.Parameters.AddWithValue("@hiredate", NewTeacher.HireDate);
+            Cmd.Parameters.AddWithValue("@salary", NewTeacher.Salary);
+            Cmd.Prepare();
+
+            // Execute the SQL query to insert the new teacher
+            Cmd.ExecuteNonQuery();
+
+            // Close the database connection
+            Conn.Close();
+
+        }
+
+        /// <summary>
+        /// Deletes a teacher from the database based on their unique identifier (TeacherId).
+        /// </summary>
+        /// <param name="TeacherId">The unique identifier of the teacher to be deleted.</param>
+        /// <example>
+        /// DELETE ../api/teacherdata/deleteteacher/3
+        /// </example>
+        [HttpGet]
+        [Route("api/TeacherDate/DeleteTeacher/{TeacherId}")]
+        public void DeleteTeacher(int TeacherId)
+        {
+            // Establish a connection to the database
+            MySqlConnection Conn = SchoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            // Define the SQL query to delete the teacher
+            string query = "DELETE FROM teachers WHERE teacherid = @teacherid";
+
+            // Create a command to execute SQL queries
+            MySqlCommand Cmd = Conn.CreateCommand();
+            Cmd.CommandText = query;
+
+            // Set the parameter for the SQL query
+            Cmd.Parameters.AddWithValue("@teacherid", TeacherId);
+            Cmd.Prepare();
+
+            // Execute the SQL query to delete the teacher
+            Cmd.ExecuteNonQuery();
+
+            // Close the database connection
+            Conn.Close();
+
+        }
+
+        /// <summary>
+        /// Updates the classes in the database that were previously assigned to the deleted teacher.
+        /// Sets the teacher ID to NULL for those classes to maintain referential integrity.
+        /// </summary>
+        /// <param name="teacherId">The ID of the teacher that has been deleted.</param>
+        /// <example>
+        /// This method is called after a teacher has been deleted from the system to ensure that
+        /// any classes previously assigned to that teacher are no longer associated with them.
+        /// </example>
+        [HttpPost]
+        public void UpdateClassesWithDeletedTeacher(int teacherId)
+        {
+            // Create a connection to the database
+            MySqlConnection Conn = SchoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            // Create a command for SQL query
+            MySqlCommand Cmd = Conn.CreateCommand();
+
+            // Query to update classes with the deleted teacher ID
+            string query = "UPDATE classes SET teacherid = NULL WHERE teacherid = @teacherid";
+            Cmd.CommandText = query;
+            Cmd.Parameters.AddWithValue("@teacherid", teacherId);
+            Cmd.Prepare();
+
+            // Execute the SQL command to update the classes
+            Cmd.ExecuteNonQuery();
+
+            // Close the database connection
+            Conn.Close();
         }
 
     }

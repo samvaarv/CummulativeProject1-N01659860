@@ -50,7 +50,13 @@ namespace CummulativeProject.Controllers
                 int ClassId = Convert.ToInt32(ResultSet["classid"]);
                 string ClassName = ResultSet["classname"].ToString();
                 string ClassCode = ResultSet["classcode"].ToString();
-                int TeacherId = Convert.ToInt32(ResultSet["teacherid"]);
+
+                // Check for null value in TeacherId column
+                int? TeacherIdNullable = ResultSet["teacherid"] != DBNull.Value ? Convert.ToInt32(ResultSet["teacherid"]) : (int?)null;
+
+                // Explicitly cast nullable int to int, or set it to a default value if it's null
+                int TeacherId = TeacherIdNullable.HasValue ? TeacherIdNullable.Value : 0;
+
                 DateTime StartDate = Convert.ToDateTime(ResultSet["startdate"]);
                 DateTime FinishDate = Convert.ToDateTime(ResultSet["finishdate"]);
 

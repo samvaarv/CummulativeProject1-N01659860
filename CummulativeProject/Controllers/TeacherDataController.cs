@@ -313,6 +313,11 @@ namespace CummulativeProject.Controllers
             Conn.Close();
         }
 
+        /// <summary>
+        /// Checks if the given employee number is unique in the database.
+        /// </summary>
+        /// <param name="employeeNumber">The employee number to check for uniqueness.</param>
+        /// <returns>True if the employee number is unique; otherwise, false.</returns>
         public bool IsEmployeeNumberUnique(string employeeNumber)
         {
             // Create connection to database    
@@ -336,7 +341,5 @@ namespace CummulativeProject.Controllers
             // If count > 0, employee number already exists; otherwise, it's unique
             return count == 0;
         }
-
-
     }
 }

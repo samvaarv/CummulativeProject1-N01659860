@@ -1,16 +1,43 @@
-﻿@model CummulativeProject.Models.CourseViewModel
+﻿@model CummulativeProject.Models.Class
+
 @{
     ViewBag.Title = "Show";
 }
 
-<div>
-    <h2>@Model.Course.CourseName</h2>
-    <p>Course Code: @Model.Course.CourseCode</p>
+<div class="card-info">
+    <div>
+        <h2>@ViewBag.ClassInfo.ClassCode - @ViewBag.ClassInfo.ClassName</h2>
+        <p>Start Date: @ViewBag.ClassInfo.StartDate.ToShortDateString()</p>
+        <p>End Date Date: @ViewBag.ClassInfo.FinishDate.ToShortDateString()</p>
+    </div>
 
-    <!-- Display the teacher who teaches the course -->
-    <h3>Teacher</h3>
-    <p>Name: @Model.Teacher.TeacherFname @Model.Teacher.TeacherLname</p>
-    <p>Employee Number: @Model.Teacher.EmployeeNumber</p>
-    <p>Hire Date: @Model.Teacher.HireDate.</p>
-    <p>Salary: @Model.Teacher.Salary</p>
+    <div class="card-inside">
+        <h3>Teacher Information</h3>
+        @if (!string.IsNullOrEmpty(@ViewBag.TeacherInfo.Teacher.TeacherFname) && !string.IsNullOrEmpty(@ViewBag.TeacherInfo.Teacher.TeacherFname))
+        {
+            <ul>
+                <li><strong>@ViewBag.TeacherInfo.Teacher.EmployeeNumber - </strong>@ViewBag.TeacherInfo.Teacher.TeacherFname @ViewBag.TeacherInfo.Teacher.TeacherLname</li>
+            </ul>
+            <!-- Delete Teacher Form -->
+            <form method="post" action="@Url.Action("DeleteTeacher", "Class")">
+                <input type="hidden" name="classId" value="@ViewBag.ClassInfo.ClassId" />
+                <input type="submit" class="btn btn-danger" value="Delete Teacher" />
+            </form>
+        }
+        else
+        {
+            <p> No teacher assigned</p>
+        }
+    </div>
+</div>
+
+<!-- Add Teacher Form -->
+<div class="card-inside">
+    <h3>Add Teacher</h3>
+    <form method="post" action="@Url.Action("AddTeacher", "Class")">
+        <input type="hidden" name="classId" value="@ViewBag.ClassInfo.ClassId" />
+        <label for="teacherId">Teacher ID:</label>
+        <input type="text" id="teacherId" name="teacherId" />
+        <input type="submit" class="btn btn-info" value="Add Teacher" />
+    </form>
 </div>

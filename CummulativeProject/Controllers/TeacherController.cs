@@ -157,5 +157,60 @@ namespace CummulativeProject.Controllers
             return RedirectToAction("List");
         }
 
+        /// <summary>
+        /// Action method for rendering the teacher update page.
+        /// </summary>
+        /// <param name="id">The unique identifier of the teacher to update.</param>
+        /// <returns>The view for updating teacher information.</returns>
+        /// <example>
+        /// GET: Teacher/Update/{id} -> Renders the update teacher page with the teacher's current information.
+        /// </example>
+        //GET: /Teacher/Update/{id}
+        public ActionResult Update(int id)
+        {
+            //Gather information about current teacher
+            TeacherDataController DataController = new TeacherDataController();
+
+            // Retrieve the selected teacher's information
+            TeacherViewModel SelectedTeacher = DataController.FindTeacher(id);
+
+            //Direct to /Views/Teacher/Update.cshtml
+            return View(SelectedTeacher);
+        }
+
+        /// <summary>
+        /// Action method for processing the form submission to update a teacher.
+        /// </summary>
+        /// <param name="id">The unique identifier of the teacher to update.</param>
+        /// <param name="TeacherFname">The updated first name of the teacher.</param>
+        /// <param name="TeacherLname">The updated last name of the teacher.</param>
+        /// <param name="EmployeeNumber">The updated employee number of the teacher.</param>
+        /// <param name="HireDate">The updated hire date of the teacher.</param>
+        /// <param name="Salary">The updated salary of the teacher.</param>
+        /// <returns>Redirects to the show page for the updated teacher.</returns>
+        /// <example>
+        /// POST: Teacher/Edit/{id} -> Redirects to the show page for the updated teacher
+        /// </example>
+        //POST: /Teacher/Edit/{id}
+        public ActionResult Edit (int id, string TeacherFname, string TeacherLname, string EmployeeNumber, DateTime HireDate, decimal Salary)
+        {
+            //Use the data access component to update the teacher in the database
+            TeacherDataController Controller = new TeacherDataController();
+
+            // Create a new instance of the Teacher class with the updated information
+            Teacher UpdatedTeacher = new Teacher();
+            UpdatedTeacher.TeacherFname = TeacherFname;
+            UpdatedTeacher.TeacherLname = TeacherLname;
+            UpdatedTeacher.EmployeeNumber = EmployeeNumber;
+            UpdatedTeacher.HireDate = HireDate;
+            UpdatedTeacher.Salary = Salary;
+
+            // Call the UpdateTeacher method to update the teacher's information
+            Controller.UpdateTeacher(id, UpdatedTeacher);
+
+            // Redirect to show the updated teacher
+            return RedirectToAction("Show/" + id);
+        }
+
     }
 }

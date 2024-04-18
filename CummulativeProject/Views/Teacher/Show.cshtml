@@ -6,7 +6,7 @@
 
 <div class="card-info">
     <div>
-        <h2>@Model.Teacher.TeacherFname @Model.Teacher.TeacherLname</h2>
+        <h2>@Model.Teacher.TeacherId.  @Model.Teacher.TeacherFname @Model.Teacher.TeacherLname</h2>
         <p>Employee Number: @Model.Teacher.EmployeeNumber</p>
         <p>Hire Date: @Model.Teacher.HireDate.ToShortDateString()</p>
     </div>
@@ -14,13 +14,21 @@
 
     <div class="card-inside">
         <h3>Classes Taught</h3>
-        <ul>
-            @foreach (var Classes in Model.ClassesTaught)
-            {
-                <li>@Classes.ClassName - @Classes.ClassCode</li>
-            }
-        </ul>
+        @if (Model.ClassesTaught.Any())
+        {
+            <ul>
+                @foreach (var Classes in Model.ClassesTaught)
+                {
+                    <li>@Classes.ClassName - @Classes.ClassCode</li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p> No classes yet.</p>
+        }
     </div>
 </div>
 
 <a href="/Teacher/DeleteConfirm/@Model.Teacher.TeacherId" class="btn btn-danger btn-rounded mt-2">Delete</a>
+<a href="/Teacher/Update/@Model.Teacher.TeacherId" class="btn btn-secondary btn-rounded mt-2 ms-3">Update</a>

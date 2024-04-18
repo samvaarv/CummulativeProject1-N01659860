@@ -24,5 +24,8 @@ namespace CummulativeProject.Models
 
         // Property to store the finish date of the class
         public DateTime FinishDate { get; set; }
+
+        // Property to store the teacher associated with the class
+        public Teacher Teacher { get; set; }
     }
 }

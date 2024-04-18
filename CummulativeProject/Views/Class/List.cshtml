@@ -15,6 +15,7 @@
             <th>Teacher ID</th>
             <th>Start Date</th>
             <th>Finish Date</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +28,7 @@
                 <td>@Class.TeacherId</td>
                 <td>@Class.StartDate.ToShortDateString()</td>
                 <td>@Class.FinishDate.ToShortDateString()</td>
+                <td><a href="/Class/Show/@Class.ClassId">View</a></td>
             </tr>
         }
     </tbody>

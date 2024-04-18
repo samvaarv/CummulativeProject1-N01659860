@@ -121,7 +121,7 @@ namespace CummulativeProject.Controllers
 
         [HttpGet]
         [Route("api/teacherdata/findteacher/{TeacherId}")]
-       public TeacherViewModel FindTeacher(int TeacherId)
+        public TeacherViewModel FindTeacher(int TeacherId)
         {
             // Create connection to database  
             MySqlConnection Conn = SchoolDbContext.AccessDatabase();
@@ -340,6 +340,55 @@ namespace CummulativeProject.Controllers
 
             // If count > 0, employee number already exists; otherwise, it's unique
             return count == 0;
+        }
+        /// <summary>
+        /// Receive teacher id and updated teacher information and update the corresponding teacher in the database
+        /// </summary>
+        /// <returns></returns>
+        /// <example>
+        /// POST api/TeacherData/UpdateTeacher/{TeacherId}
+        /// POST CONTENT / REQUEST BODY
+        /// {
+        ///     "TeacherFname": "Merissa",
+        ///     "TeacheLName": "Espionaz",
+        ///     "EmployeeNumber": "T381",
+        ///     "HireDate": "2014-07-10",
+        ///     "Salary": "68.77",
+        /// }
+        /// </example>
+
+        //Update Teacher
+        [HttpGet]
+        [Route("api/TeacherData/UpdateTeacher/{TeacherId}")]
+        public void UpdateTeacher(int TeacherId, [FromBody]Teacher UpdatedTeacher)
+        {
+           // Create connection to database 
+            MySqlConnection Conn = SchoolDbContext.AccessDatabase();
+            Conn.Open();
+
+            // Define the SQL query to update the teacher
+            string query = "UPDATE teachers SET teacherfname = @teacherfname, teacherlname = @teacherlname, employeenumber = @employeenumber, hiredate = @hiredate, salary = @salary WHERE teacherid = @id";
+
+            // Create a command for SQL query
+            MySqlCommand Cmd = Conn.CreateCommand();
+            Cmd.CommandText = query;
+
+            // Set the parameters for the SQL query
+            Cmd.Parameters.AddWithValue("@teacherfname", UpdatedTeacher.TeacherFname);
+            Cmd.Parameters.AddWithValue("@teacherlname", UpdatedTeacher.TeacherLname);
+            Cmd.Parameters.AddWithValue("@employeenumber", UpdatedTeacher.EmployeeNumber);
+            Cmd.Parameters.AddWithValue("@hiredate", UpdatedTeacher.HireDate);
+            Cmd.Parameters.AddWithValue("@salary", UpdatedTeacher.Salary);
+            Cmd.Parameters.AddWithValue("@id", TeacherId);
+            Cmd.Prepare();
+
+            // Execute the SQL query to insert the new teacher
+            Cmd.ExecuteNonQuery();
+
+            // Close the database connection
+            Conn.Close();
+
+            return;
         }
     }
 }
